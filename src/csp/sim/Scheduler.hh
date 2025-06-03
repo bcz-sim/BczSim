@@ -1,0 +1,8 @@
+
+namespace csp {
+
+class Scheduler {
+    ;
+};
+
+}
