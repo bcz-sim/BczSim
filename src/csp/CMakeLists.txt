@@ -1,6 +1,15 @@
 
 # Cycle-based Simulation Platform
 
+cmake_minimum_required(VERSION 3.30)
+
 project(sim-csp)
 
-add_library(sim-csp)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+include_directories(.)
+
+#add_library(sim-csp)
+
+add_subdirectory(test)

@@ -4,7 +4,7 @@
 #include <iostream>
 
 int main() {
-  using namespace cds;
+  using namespace csp::cds;
   Table tab;
   tab["aaa"] = 111_I;
   tab["bbb"] = Table{ {"aa", 11_I }, {"bb", "22"_S }, { "cc", 3.3_F } };
