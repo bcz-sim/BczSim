@@ -1,11 +1,12 @@
 
 #include <csp/sim/Module.hh>
-#include <bus/chi/Port.hh>
+#include <soc/chi/Port.hh>
 
-namespace bus::chi {
+namespace soc::chi {
 
 class Module : public csp::Module {
-
+public:
+    Module(csp::Module *parent, const string &name);
     CHIPort* getPortById(int id) const;
     CHIPort* getPortByName(string &name) const;
 };

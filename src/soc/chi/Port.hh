@@ -1,8 +1,8 @@
 
-#include <bus/chi/Request.hh>
-#include <bus/chi/Flit.hh>
+#include <soc/chi/Request.hh>
+#include <soc/chi/Flit.hh>
 
-namespace bus::chi {
+namespace soc::chi {
 
 using ReqPort = csp::Port<RcPtr<Request>>;
 using CHIPort = csp::Port<uptr<Flit>>;

@@ -1,5 +1,5 @@
 
-namespace bus::chi {
+namespace soc::chi {
 
 class Flit {
     int16_t txnid, srcid;

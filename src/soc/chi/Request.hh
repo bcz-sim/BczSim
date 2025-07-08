@@ -1,5 +1,5 @@
 
-namespace bus::chi {
+namespace soc::chi {
 
 enum ReqType {
     Req_None,
