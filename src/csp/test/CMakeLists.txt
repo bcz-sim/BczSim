@@ -1,3 +1,5 @@
 
 add_executable(test-base-cds test-cds.cc)
-add_test(test-cds test-base-cds)
+add_executable(test-sim-module test-module.cc)
+add_test(base-cds test-base-cds)
+add_test(sim-module test-sim-module)

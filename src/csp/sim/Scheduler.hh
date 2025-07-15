@@ -13,19 +13,29 @@ enum SchedTiming {
     SchedAtTick, SchedPreTick, SchedPostTick
 };
 
-struct SchedEvent {
-    SimObj   *sobj;
-    SchedFunc cb_func;
-    string    desc   = "";
-    CB_Timing timing = CB_AtTick;
+class EventQueues;
+class Scheduler;
+
+class SchedEvent {
+    SimObj   *sobj;  // SimObj belongs to
+    SchedFunc func;  // callback function
+    string    desc     = "";
+    SchedTiming timing = SchedAtTick;
+    long tick          = -1;
+    bool cycle_event   = false;
+public:
+    SchedEvent(SimObj *so, SchedFunc &f, string &d = "", SchedTiming t = SchedAtTick)
+	: sobj(so), func(f), desc(d), timing(t) {}
+
+    friend class Scheduler;
+    friend class EventQueues;
 };
 
-class EventQueue;
 class Scheduler {
     long tick_ = 0;
     int  freq_mhz_ = 0;
     int  ticks_per_cycle_ = 0;
-    EventQueue *equeue_;
+    EventQueues *equeues_;
 
 public:
     Scheduler() {}
@@ -40,6 +50,8 @@ public:
 
     void callback     (int cyc_inc,  sptr<SchedEvent> event);
     void callbackTicks(int tick_inc, sptr<SchedEvent> event);
+
+    void advance(int nr_cycles = 1);
 };
 
 class SchedHelper {

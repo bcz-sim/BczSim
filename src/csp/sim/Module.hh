@@ -8,10 +8,12 @@ class Module : public SimObj {
 public:
     Module(Module *parent, const string &name)
 	: SimObj(parent, name) {
-	sched_ = parent->getSched();
+	if (parent)
+	    sched_ = parent->getSched();
     }
 
     Scheduler *getSched() const { return sched_; }
+    long getCycle() const { return sched_->getCycle(); }
 
     // set scheduler recursively
     void setSchedAll(Scheduler *sched);
@@ -21,7 +23,7 @@ public:
     }
 
     // return a copy of children vector
-    StdVector <Module*> getSubModules() const;
+    StdVector<Module*> getSubModules() const;
 
     virtual Port* getPort(const string& name) const;
 
