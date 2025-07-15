@@ -13,7 +13,9 @@ public:
     }
 
     void build() {
-	getSched()->registerCycleFn({this, [this]{ cycle(); }, "cycle"});
+	getSched()->registerCycleFn(
+	    SchedEvent(this,
+		       [this](){ cycle(); }, "cycle"));
     }
 
     void cycle() {

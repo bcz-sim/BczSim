@@ -11,6 +11,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CSP_SRC_ROOT CMAKE_CURRENT_SOURCE_DIR)
 include_directories(.)
 
-#add_library(sim-csp)
+add_library(sim-csp sim/Module.cc sim/Scheduler.cc)
 
 add_subdirectory(test)

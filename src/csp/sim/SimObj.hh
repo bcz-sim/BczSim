@@ -16,6 +16,7 @@ public:
 	: parent_(parent), name_(name) {
 	parent_->addChild(this);
     }
+    virtual ~SimObj() { }
 
     SimObj*   getParent() const { return parent_; }
     std::string getName() const { return name_; }

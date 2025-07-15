@@ -12,7 +12,7 @@ using sptr = std::shared_ptr<T>;
 template <typename T>
 using pptr = T*;
 
-template <typename T>
-using rcptr = Refcnt<T>;
+//template <typename T>
+//using rcptr = Refcnt<T>;
 
 }

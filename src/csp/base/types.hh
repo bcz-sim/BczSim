@@ -1,7 +1,8 @@
 
-#include <stdint>
+#include <cstdint>
 #include <string>
 #include <vector>
+#include <csp/base/ptrs.hh>
 
 namespace csp {
 

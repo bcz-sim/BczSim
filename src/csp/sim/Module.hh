@@ -1,5 +1,8 @@
 
 #include <csp/base/types.hh>
+#include <csp/sim/SimObj.hh>
+#include <csp/sim/Scheduler.hh>
+#include <csp/sim/Port.hh>
 
 namespace csp {
 

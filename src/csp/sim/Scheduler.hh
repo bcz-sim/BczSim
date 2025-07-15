@@ -1,6 +1,7 @@
 
 #include <functional>
 #include <csp/base/types.hh>
+#include <csp/sim/SimObj.hh>
 
 namespace csp {
 
@@ -15,6 +16,7 @@ enum SchedTiming {
 
 class EventQueues;
 class Scheduler;
+class SchedHelper;
 
 class SchedEvent {
     SimObj   *sobj;  // SimObj belongs to
@@ -24,10 +26,14 @@ class SchedEvent {
     long tick          = -1;
     bool cycle_event   = false;
 public:
-    SchedEvent(SimObj *so, SchedFunc &f, string &d = "", SchedTiming t = SchedAtTick)
+    SchedEvent(SimObj *so, SchedFunc f)
+	: sobj(so), func(f) {}
+    SchedEvent(SimObj *so, SchedFunc f,
+	       string d, SchedTiming t = SchedAtTick)
 	: sobj(so), func(f), desc(d), timing(t) {}
 
     friend class Scheduler;
+    friend class SchedHelper;
     friend class EventQueues;
 };
 
@@ -63,21 +69,21 @@ public:
 		int cyc_delay = -1,
 		SchedFunc func = nullptr,
 		SchedTiming timing = SchedAtTick)
-	: sched_(sched), cycle_delay_(cyc_delay)
+	: sched_(sched), cyc_delay_(cyc_delay)
     {
-	sevent_ = std::make_shared<SchedEvent>(sobj, desc, func, timing);
+	sevent_ = std::make_shared<SchedEvent>(sobj, func, desc, timing);
     }
 
     void callback(int cyc_delay = -1) const {
 	if (cyc_delay == -1) cyc_delay = cyc_delay_;
-	sched_->callback(cycle_delay, sevent_);
+	sched_->callback(cyc_delay, sevent_);
     }
 
     // higher cost
     void callback(int cyc_delay, SchedFunc func) const {
-	auto e = std::make_shared<SchedEvent>(sevent_->sobj, sevent_->desc,
-					      func, sevent_->timing);
-	sched_->callback(cycle_delay, sevent_);
+	auto e = std::make_shared<SchedEvent>(sevent_->sobj, func, sevent_->desc,
+					      sevent_->timing);
+	sched_->callback(cyc_delay, sevent_);
     }
 
 };

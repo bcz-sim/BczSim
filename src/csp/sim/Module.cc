@@ -17,7 +17,7 @@ StdVector<Module*> Module::getSubModules() const
     std::vector<Module*> modules;
     auto children = SimObj::getChildren();
     for (SimObj *obj: children) {
-        Module *mod = dynamic_cast<Module>(obj);
+        Module *mod = dynamic_cast<Module*>(obj);
         if (mod)
             modules.push_back(mod);
     }
@@ -28,7 +28,7 @@ Port* Module::getPort(const string& name) const
 {
     auto children = SimObj::getChildren();
     for (SimObj *obj: children) {
-        Port *p = dynamic_cast<Port>(obj);
+        Port *p = dynamic_cast<Port*>(obj);
         if (p->getName() == name)
 	    return p;
     }
