@@ -92,8 +92,8 @@ void Scheduler::callbackTicks(int tick_inc, sptr<SchedEvent> event)
 void Scheduler::advance(int nr_cycles)
 {
     while (nr_cycles --) {
-	tick_ += ticks_per_cycle_;
-	equeues_->invokeUntil(getTick());
+        tick_ += ticks_per_cycle_;
+        equeues_->invokeUntil(getTick());
     }
 }
 
