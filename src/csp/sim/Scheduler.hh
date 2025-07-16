@@ -27,10 +27,10 @@ class SchedEvent {
     bool cycle_event   = false;
 public:
     SchedEvent(SimObj *so, SchedFunc f)
-	: sobj(so), func(f) {}
+        : sobj(so), func(f) {}
     SchedEvent(SimObj *so, SchedFunc f,
-	       string d, SchedTiming t = SchedAtTick)
-	: sobj(so), func(f), desc(d), timing(t) {}
+               string d, SchedTiming t = SchedAtTick)
+        : sobj(so), func(f), desc(d), timing(t) {}
 
     friend class Scheduler;
     friend class SchedHelper;
@@ -67,24 +67,24 @@ class SchedHelper {
     sptr<SchedEvent> sevent_;
 public:
     SchedHelper(Scheduler *sched, SimObj *sobj, string desc,
-		int cyc_delay = -1,
-		SchedFunc func = nullptr,
-		SchedTiming timing = SchedAtTick)
-	: sched_(sched), cyc_delay_(cyc_delay)
+                int cyc_delay = -1,
+                SchedFunc func = nullptr,
+                SchedTiming timing = SchedAtTick)
+        : sched_(sched), cyc_delay_(cyc_delay)
     {
-	sevent_ = std::make_shared<SchedEvent>(sobj, func, desc, timing);
+        sevent_ = std::make_shared<SchedEvent>(sobj, func, desc, timing);
     }
 
     void callback(int cyc_delay = -1) const {
-	if (cyc_delay == -1) cyc_delay = cyc_delay_;
-	sched_->callback(cyc_delay, sevent_);
+        if (cyc_delay == -1) cyc_delay = cyc_delay_;
+        sched_->callback(cyc_delay, sevent_);
     }
 
     // higher cost
     void callback(int cyc_delay, SchedFunc func) const {
-	auto e = std::make_shared<SchedEvent>(sevent_->sobj, func, sevent_->desc,
-					      sevent_->timing);
-	sched_->callback(cyc_delay, sevent_);
+        auto e = std::make_shared<SchedEvent>(sevent_->sobj, func, sevent_->desc,
+                                              sevent_->timing);
+        sched_->callback(cyc_delay, sevent_);
     }
 
 };

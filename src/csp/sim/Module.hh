@@ -10,14 +10,14 @@ class Module : public SimObj {
     Scheduler *sched_;
 public:
     Module(Module *parent, const string &name)
-	: SimObj(parent, name) {
-	if (parent)
-	    sched_ = parent->getSched();
+        : SimObj(parent, name) {
+        if (parent)
+            sched_ = parent->getSched();
     }
 
     // for root/top module
     Module(const string &name, Scheduler *sched)
-	: SimObj(nullptr, name), sched_(sched) {
+        : SimObj(nullptr, name), sched_(sched) {
     }
 
     Scheduler *getSched() const { return sched_; }
@@ -27,7 +27,7 @@ public:
     void setSchedAll(Scheduler *sched);
 
     virtual string getModuleName() const {
-	return "NoName";
+        return "NoName";
     }
 
     // return a copy of children vector

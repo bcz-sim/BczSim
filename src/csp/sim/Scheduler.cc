@@ -14,11 +14,11 @@ class EventQueues {
     EventQ events_post_tick;
 
     EventQ *getEventQ(SchedTiming t) {
-	EventQ *eq = nullptr;
-	if      (t == SchedAtTick)   eq = &events_at_tick;
-	else if (t == SchedPreTick)  eq = &events_pre_tick;
-	else if (t == SchedPostTick) eq = &events_post_tick;
-	return eq;
+        EventQ *eq = nullptr;
+        if      (t == SchedAtTick)   eq = &events_at_tick;
+        else if (t == SchedPreTick)  eq = &events_pre_tick;
+        else if (t == SchedPostTick) eq = &events_post_tick;
+        return eq;
     }
 
     int ticks_per_cycle_;
@@ -28,44 +28,44 @@ public:
     void setTicksPerCycle(int tpc) { ticks_per_cycle_ = tpc; }
 
     void addEvent(Event &event) {
-	auto *eq = getEventQ(event->timing);
-	eq->push_back(event); // fixme, order
+        auto *eq = getEventQ(event->timing);
+        eq->push_back(event); // fixme, order
     }
 
     EventQ* getCloser(EventQ* qa, EventQ* qb) const {
-	if (qa->empty())      return qb;
-	else if (qb->empty()) return qa;
-	else if (qa->front()->tick > qb->front()->tick) return qb;
-	else return qa;
+        if (qa->empty())      return qb;
+        else if (qb->empty()) return qa;
+        else if (qa->front()->tick > qb->front()->tick) return qb;
+        else return qa;
     }
 
     EventQ* getEventQNear() {
-	EventQ *eq = getCloser(&events_pre_tick, &events_at_tick);
-	eq = getCloser(eq, &events_post_tick);
-	return eq;
+        EventQ *eq = getCloser(&events_pre_tick, &events_at_tick);
+        eq = getCloser(eq, &events_post_tick);
+        return eq;
     }
 
     long nextEventTick() {
-	return getEventQNear()->front()->tick;
+        return getEventQNear()->front()->tick;
     }
 
     void invokeEvent(Event &e) {
-	e->func();
-	if (e->cycle_event) {
-	    e->tick += ticks_per_cycle_;
-	    addEvent(e);
-	}
+        e->func();
+        if (e->cycle_event) {
+            e->tick += ticks_per_cycle_;
+            addEvent(e);
+        }
     }
 
     void invokeUntil(long tick) {
-	while (true) {
-	    auto *eq = getEventQNear();
-	    if (eq->empty()) break;
-	    if (eq->front()->tick > tick) break;
-	    auto e = eq->front(); // fixme: copy element
-	    eq->pop_front();
-	    invokeEvent(e);
-	}
+        while (true) {
+            auto *eq = getEventQNear();
+            if (eq->empty()) break;
+            if (eq->front()->tick > tick) break;
+            auto e = eq->front(); // fixme: copy element
+            eq->pop_front();
+            invokeEvent(e);
+        }
     }
 };
 

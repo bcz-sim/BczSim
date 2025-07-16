@@ -8,25 +8,25 @@ using namespace csp;
 class ModuleA : public Module {
 public:
     ModuleA(const string &name, Scheduler *s)
-	: Module(name, s) {
+        : Module(name, s) {
     }
 
     void build() {
-	getSched()->registerCycleFn(
-	    SchedEvent(this,
-		       [this](){ cycle(); }, "cycle"));
+        getSched()->registerCycleFn(
+            SchedEvent(this,
+                       [this](){ cycle(); }, "cycle"));
     }
 
     void cycle() {
-	std::cout << "cycle " << getCycle() << std::endl;
+        std::cout << "cycle " << getCycle() << std::endl;
     }
 
     string getModuleName() const {
-	return "ModuleA";
+        return "ModuleA";
     }
 
     Port* getPort(const string&) const {
-	return nullptr;
+        return nullptr;
     }
 };
 

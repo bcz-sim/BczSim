@@ -12,7 +12,7 @@ class Port  : public SimObj {
     Port  *target_;
 public:
     Port(SimObj *parent, const string &name)
-	: SimObj(parent, name) { }
+        : SimObj(parent, name) { }
 
     void connect(Port *t) { target_ = t; }
 };
@@ -25,18 +25,18 @@ class Port  : public SimObj {
     std::function<void(T&)> receiver_;
 public:
     Port(SimObj *parent, const string &name)
-	: SimObj(parent, name) { }
+        : SimObj(parent, name) { }
 
     void setRecevier(std::function<void(T&)> rec) {
-	receiver_ = rec;
+        receiver_ = rec;
     }
 
     virtual bool receive(T &pld) const {
-	if (receiver_) return receiver_(pld);
-	else           return false;
+        if (receiver_) return receiver_(pld);
+        else           return false;
     }
     bool send(T &pld) const {
-	return target_->receive(pld);
+        return target_->receive(pld);
     }
 };
 #endif

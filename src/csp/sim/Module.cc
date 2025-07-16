@@ -30,7 +30,7 @@ Port* Module::getPort(const string& name) const
     for (SimObj *obj: children) {
         Port *p = dynamic_cast<Port*>(obj);
         if (p->getName() == name)
-	    return p;
+            return p;
     }
     return nullptr;
 }
