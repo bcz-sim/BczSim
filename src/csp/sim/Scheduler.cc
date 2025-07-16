@@ -1,13 +1,9 @@
 
 #include "Scheduler.hh"
 
-namespace csp {
+#include <list>
 
-void Scheduler::setFrequency(long freq_mhz)
-{
-    freq_mhz_ = freq_mhz;
-    ticks_per_cycle_ =  1000000 / freq_mhz;
-}
+namespace csp {
 
 class EventQueues {
     using Event = sptr<SchedEvent>;
@@ -25,12 +21,15 @@ class EventQueues {
 	return eq;
     }
 
+    int ticks_per_cycle_;
+
 public:
     EventQueues() {}
+    void setTicksPerCycle(int tpc) { ticks_per_cycle_ = tpc; }
 
     void addEvent(Event &event) {
-	auto *eq = getEventQ(event.timing);
-	;
+	auto *eq = getEventQ(event->timing);
+	eq->push_back(event); // fixme, order
     }
 
     EventQ* getCloser(EventQ* qa, EventQ* qb) const {
@@ -40,20 +39,20 @@ public:
 	else return qa;
     }
 
-    EventQ* getEventQNear() const {
+    EventQ* getEventQNear() {
 	EventQ *eq = getCloser(&events_pre_tick, &events_at_tick);
 	eq = getCloser(eq, &events_post_tick);
 	return eq;
     }
 
-    long nextEventTick() const {
+    long nextEventTick() {
 	return getEventQNear()->front()->tick;
     }
 
     void invokeEvent(Event &e) {
 	e->func();
 	if (e->cycle_event) {
-	    e->tick += ticks_per_cycle;
+	    e->tick += ticks_per_cycle_;
 	    addEvent(e);
 	}
     }
@@ -74,27 +73,45 @@ void Scheduler::registerCycleFn(const SchedEvent &_event)
 {
     auto event = std::make_shared<SchedEvent>(_event);
     event->cycle_event = true;
-    equeues_->addEvent(event)
+    event->tick = getTick() + ticks_per_cycle_;
+    equeues_->addEvent(event);
 }
 
 void Scheduler::callback(int cyc_inc,  sptr<SchedEvent> event)
 {
-    event->tick = getTick() + cycle_inc * ticks_per_cycle_;
-    addEvent(event);
+    event->tick = getTick() + cyc_inc * ticks_per_cycle_;
+    equeues_->addEvent(event);
 }
 
 void Scheduler::callbackTicks(int tick_inc, sptr<SchedEvent> event)
 {
     event->tick = getTick() + tick_inc;
-    addEvent(event);
+    equeues_->addEvent(event);
 }
 
 void Scheduler::advance(int nr_cycles)
 {
     while (nr_cycles --) {
-	long tick = getTick() + ticks_per_cycle_;
-	equeues_->invokeUntil(tick);
+	tick_ += ticks_per_cycle_;
+	equeues_->invokeUntil(getTick());
     }
+}
+
+void Scheduler::setFrequency(int freq_mhz)
+{
+    freq_mhz_ = freq_mhz;
+    ticks_per_cycle_ = 1000000 / freq_mhz;
+    equeues_->setTicksPerCycle(ticks_per_cycle_);
+}
+
+Scheduler::Scheduler(int freq_mhz) {
+    equeues_ = new EventQueues();
+    setFrequency(freq_mhz);
+}
+
+Scheduler::~Scheduler()
+{
+    delete equeues_;
 }
 
 }

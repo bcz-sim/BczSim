@@ -15,6 +15,11 @@ public:
 	    sched_ = parent->getSched();
     }
 
+    // for root/top module
+    Module(const string &name, Scheduler *sched)
+	: SimObj(nullptr, name), sched_(sched) {
+    }
+
     Scheduler *getSched() const { return sched_; }
     long getCycle() const { return sched_->getCycle(); }
 

@@ -7,9 +7,8 @@ using namespace csp;
 
 class ModuleA : public Module {
 public:
-    ModuleA(Module *parent, const string &name)
-	: Module(parent, name) {
-	;
+    ModuleA(const string &name, Scheduler *s)
+	: Module(name, s) {
     }
 
     void build() {
@@ -33,8 +32,8 @@ public:
 
 int main() {
     auto *sched = new Scheduler(1000);
-    auto *ma = new ModuleA(nullptr, "module_a");
-    ma->setSchedAll(sched);
+    auto *ma = new ModuleA("top", sched);
+    ma->build();
 
-    sched->advance(100);
+    sched->advance(10);
 }

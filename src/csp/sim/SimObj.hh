@@ -14,7 +14,8 @@ class SimObj {
 public:
     SimObj(SimObj *parent, const std::string &name)
 	: parent_(parent), name_(name) {
-	parent_->addChild(this);
+	if (parent_)
+	    parent_->addChild(this);
     }
     virtual ~SimObj() { }
 

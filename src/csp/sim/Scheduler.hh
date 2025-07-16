@@ -44,8 +44,9 @@ class Scheduler {
     EventQueues *equeues_;
 
 public:
-    Scheduler() {}
-    Scheduler(int freq_mhz) { setFrequency(freq_mhz); }
+    Scheduler() : Scheduler(1000) { }
+    Scheduler(int freq_mhz);
+    ~Scheduler();
 
     void setFrequency(int freq_mhz);
 
