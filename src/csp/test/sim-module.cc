@@ -2,8 +2,6 @@
 #include <csp/sim/Module.hh>
 #include <csp/plat/Platform.hh>
 
-#include <iostream>
-
 using namespace csp;
 
 class ModuleA : public Module {
@@ -24,14 +22,10 @@ public:
     }
 
     void cycle() {
-        //std::cout << "cycle " << getCycle()
-        //          << ", tick " << getSched()->getTick()
-        //          << std::endl;
         logger_->debug("%s do cycle", getName().c_str());
         if (getCycle() == 2) {
             logger_->debug("schedule callback, +3");
             schh_->callback(3, [this](){
-                //std::cout << "callback, cycle " << getCycle() << std::endl;
                 logger_->debug("callback");
             });
         }
