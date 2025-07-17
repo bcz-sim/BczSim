@@ -13,7 +13,7 @@ set(CSP_SRC_ROOT CMAKE_CURRENT_SOURCE_DIR)
 include_directories(.)
 
 add_library(sim-csp
-  plat/Logger.cc
+  plat/Arguments.cc plat/Logger.cc plat/Platform.cc
   sim/Module.cc sim/Scheduler.cc)
 
 add_subdirectory(test)
