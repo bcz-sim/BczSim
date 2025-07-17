@@ -84,7 +84,7 @@ public:
     void callback(int cyc_delay, SchedFunc func) const {
         auto e = std::make_shared<SchedEvent>(sevent_->sobj, func, sevent_->desc,
                                               sevent_->timing);
-        sched_->callback(cyc_delay, sevent_);
+        sched_->callback(cyc_delay, e);
     }
 
 };

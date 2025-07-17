@@ -35,4 +35,16 @@ Port* Module::getPort(const string& name) const
     return nullptr;
 }
 
+uptr<Logger> Module::createLogger(string name)
+{
+    auto logger = std::make_unique<Logger>("stdout");
+    int logger_id = logger->getLoggerId();
+    logger->setPrefixFunc([this, logger_id](char *buf, int max){
+        return snprintf(buf, max, "@%ld L%d ", getCycle(), logger_id);
+    });
+    //logger->trace("create logger, %s\n", fullname);
+    logger->trace("create logger");
+    return logger;
+}
+
 }

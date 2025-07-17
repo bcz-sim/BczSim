@@ -3,6 +3,7 @@
 #include <csp/sim/SimObj.hh>
 #include <csp/sim/Scheduler.hh>
 #include <csp/sim/Port.hh>
+#include <csp/plat/Logger.hh>
 
 namespace csp {
 
@@ -35,6 +36,8 @@ public:
 
     virtual Port* getPort(const string& name) const;
 
+
+    uptr<Logger> createLogger(string name);
 };
 
 }
